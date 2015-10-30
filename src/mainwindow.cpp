@@ -34,10 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     bkg2->addColor(1.0,Qt::darkGreen);
 
     mSpeedGauge->addArc(55);
-    mSpeedGauge->addDegrees(65)->setValueRange(0,80);
+    mSpeedGauge->addDegrees(65)->setValueRange(MIN_VALUE,MAX_VALUE);
     mSpeedGauge->addColorBand(50);
 
-    mSpeedGauge->addValues(80)->setValueRange(0,80);
+    mSpeedGauge->addValues(80)->setValueRange(MIN_VALUE,MAX_VALUE);
 
     mSpeedGauge->addLabel(70)->setText("Km/h");
 
@@ -63,11 +63,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+/*initialize static variables*/
+
 int MainWindow::counter = 0;
+int MainWindow::current_value = 0;
+
+/************************************/
 
 MainWindow::~MainWindow()
 {
-    //killTimer(timer1); // destroy timer1
     delete ui;
 }
 
@@ -75,9 +79,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
     mSpeedNeedle->setCurrentValue(value);
+    MainWindow::current_value = value;
 
     QString speedValueString;
-    speedValueString = speedValueString.sprintf("%d",value);
+    speedValueString = speedValueString.sprintf("%d",MainWindow::current_value);
     lab->setText(speedValueString);
 }
 
@@ -91,17 +96,22 @@ void MainWindow::timerHandler()
 {
     // timer handler
     MainWindow::counter++;
-    QString speedValueString;
-    speedValueString = speedValueString.sprintf("%d",mSpeedNeedle->);
-    lab->setText(speedValueString);
+
+
 
     if(counter > MAX_VALUE)
     {
         counter = MIN_VALUE;
     }
     mSpeedNeedle->setCurrentValue(MainWindow::counter);
+    MainWindow::current_value = MainWindow::counter;
 
+    QString speedValueString;
+    speedValueString = speedValueString.sprintf("%d",MainWindow::current_value);
+    lab->setText(speedValueString);
 }
+
+
 
 void MainWindow::on_pushButtonStopTimer_clicked()
 {
