@@ -39,6 +39,8 @@ private:
 
     static int counter;
 
+    static int current_value;
+
     //added from example
     QcGaugeWidget *mSpeedGauge;
     QcNeedleItem *mSpeedNeedle;
