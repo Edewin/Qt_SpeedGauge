@@ -3,6 +3,9 @@
 #include "delayclass.h"
 #include <QTimer>
 
+#define MIN_VALUE 0
+#define MAX_VALUE 100
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,21 +40,34 @@ MainWindow::MainWindow(QWidget *parent) :
     mSpeedGauge->addValues(80)->setValueRange(0,80);
 
     mSpeedGauge->addLabel(70)->setText("Km/h");
+
     lab = mSpeedGauge->addLabel(40);
     lab->setText("0");
+
     mSpeedNeedle = mSpeedGauge->addNeedle(60);
     mSpeedNeedle->setLabel(lab);
     mSpeedNeedle->setColor(Qt::white);
-    mSpeedNeedle->setValueRange(0,80);
+    mSpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
     mSpeedGauge->addBackground(4);
-    mSpeedGauge->addGlass(88);
+    mSpeedGauge->addGlass(0.1);
 
     ui->verticalLayout->addWidget(mSpeedGauge);
 
+    //timer zone
+
+    timer1 = new QTimer(this);
+
+    connect(timer1, SIGNAL(timeout()),this,SLOT(timerHandler()));
+
+
+
 }
+
+int MainWindow::counter = 0;
 
 MainWindow::~MainWindow()
 {
+    //killTimer(timer1); // destroy timer1
     delete ui;
 }
 
@@ -68,17 +84,26 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
-    for(int i=0; i<=80; i++)
-    {
-        Delay::msleep(100);
-        mSpeedNeedle->setCurrentValue(i);
-
-    }
+    timer1->start(100);
 }
 
 void MainWindow::timerHandler()
 {
     // timer handler
+    MainWindow::counter++;
+    QString speedValueString;
+    speedValueString = speedValueString.sprintf("%d",mSpeedNeedle->);
+    lab->setText(speedValueString);
 
+    if(counter > MAX_VALUE)
+    {
+        counter = MIN_VALUE;
+    }
+    mSpeedNeedle->setCurrentValue(MainWindow::counter);
 
+}
+
+void MainWindow::on_pushButtonStopTimer_clicked()
+{
+    timer1->stop();
 }
