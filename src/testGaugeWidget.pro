@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,6 +18,7 @@ SOURCES += main.cpp\
     qcgaugewidget.cpp
 
 HEADERS  += mainwindow.h \
-    qcgaugewidget.h
+    qcgaugewidget.h \
+    delayclass.h
 
 FORMS    += mainwindow.ui
