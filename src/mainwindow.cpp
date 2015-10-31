@@ -18,7 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
+
     sf::Joystick::update();
+
     if(sf::Joystick::isConnected(0))
     {
         //joystick number 0 is connected
@@ -26,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
         msgbox.exec();
 
     }
+
 
     mSpeedGauge = new QcGaugeWidget(this);
     mSpeedNeedle = new QcNeedleItem(this);
@@ -149,8 +152,8 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
     timer1->start(40);
-    msgbox.setText("Timer1 has been released to space :D");
-    msgbox.exec();
+  //  msgbox.setText("Timer1 has been released to space :D");
+  //  msgbox.exec();
 }
 
 void MainWindow::timerHandler()
@@ -158,13 +161,17 @@ void MainWindow::timerHandler()
     // timer handler
     MainWindow::current_value++;
 
-
     if(MainWindow::current_value > MAX_VALUE)
     {
         MainWindow::current_value= MIN_VALUE;
     }
-    mSpeedNeedle->setCurrentValue(MainWindow::current_value);
-    mySpeedNeedle->setCurrentValue(MainWindow::current_value);
+    mSpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::X));
+
+    sf::Joystick::update();
+    textLabel = textLabel.sprintf("X: %f, Y: %f",sf::Joystick::getAxisPosition(0,sf::Joystick::X),
+                                  sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
+    ui->label->setText(textLabel);
+    mySpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
   //  MainWindow::current_value = MainWindow::counter;
 
     QString speedValueString;

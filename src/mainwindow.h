@@ -41,6 +41,8 @@ private:
 
     QcLabelItem *lab;
 
+    QString textLabel;
+
     QcLabelItem *lab2;
 
     QTimer *timer1;
