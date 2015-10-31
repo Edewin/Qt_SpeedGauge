@@ -97,6 +97,10 @@ void MainWindow::timerHandler()
     // timer handler
     MainWindow::counter++;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6735d5ec761f1d6e2117a3398df732f09719f312
 
     if(counter > MAX_VALUE)
     {
