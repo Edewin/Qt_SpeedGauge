@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "qcgaugewidget.h"
 #include "delayclass.h"
+
+#include <SFML/Window.hpp>
+#include <QMessageBox>
 #include <QTimer>
 
 #define MIN_VALUE 0
@@ -12,7 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     ui->setupUi(this);
+
+    sf::Joystick::update();
+    if(sf::Joystick::isConnected(0))
+    {
+        //joystick number 0 is connected
+        msgbox.setText("joystick 0 is connected");
+        msgbox.exec();
+
+    }
 
     mSpeedGauge = new QcGaugeWidget(this);
     mSpeedNeedle = new QcNeedleItem(this);
@@ -136,6 +149,8 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
     timer1->start(40);
+    msgbox.setText("Timer1 has been released to space :D");
+    msgbox.exec();
 }
 
 void MainWindow::timerHandler()

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "qcgaugewidget.h"
 #include <QTimer>
+#include <QMessageBox>
 
 
 namespace Ui {
@@ -34,6 +35,8 @@ private slots:
     void on_pushButtonStopTimer_clicked();
 
 private:
+    QMessageBox msgbox;
+
     Ui::MainWindow *ui;
 
     QcLabelItem *lab;
