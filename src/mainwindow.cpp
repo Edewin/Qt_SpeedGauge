@@ -83,15 +83,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mySpeedNeedle = mySpeedGauge->addNeedle(60);
     mySpeedNeedle->setLabel(lab2);
-    mySpeedNeedle->setColor(Qt::black);
+    mySpeedNeedle->setColor(Qt::darkBlue);
     mySpeedNeedle->setNeedle(QcNeedleItem::AttitudeMeterNeedle);
     mySpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
     mySpeedGauge->addBackground(4);
-    mySpeedGauge->addGlass(0.1);
+    mySpeedGauge->addGlass(59)->setPosition(2);
 
 
-    ui->verticalLayout->addWidget(mSpeedGauge);
-    ui->verticalLayout->addWidget(mySpeedGauge);
+    ui->horizontalLayout->addWidget(mSpeedGauge);
+    ui->horizontalLayout->addWidget(mySpeedGauge);
    // lab->setText("123");
 
    // ui->gridLayout_2->addWidget(mSpeedGauge);
@@ -135,7 +135,7 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
-    timer1->start(100);
+    timer1->start(40);
 }
 
 void MainWindow::timerHandler()
@@ -178,17 +178,20 @@ void MainWindow::createSpeedGauge(QcGaugeWidget* gaugeWidget,  int range_minValu
     bkg1->clearrColors();
     bkg1->addColor(0.1,Qt::black);
     bkg1->addColor(0.4,Qt::white);
-    bkg1->addColor(0.9,Qt::black);
+  //  bkg1->addColor(0.5,Qt::darkYellow);
+    bkg1->addColor(0.6,Qt::white);
+    bkg1->addColor(1.0,Qt::black);
 
     QcBackgroundItem *bkg2 = gaugeWidget->addBackground(28);
     bkg2->clearrColors();
     bkg2->addColor(0.5,Qt::white);
-    bkg2->addColor(0.9, 0xFA58AC);
-    bkg2->addColor(0.1,0xFA58AC);
+  //  bkg2->addColor(1.0, Qt::darkYellow);
+    bkg2->addColor(0.1,Qt::darkYellow);
 
-    //gaugeWidget->addArc(55);
-    //gaugeWidget->addDegrees(65)->setValueRange(range_minValue,range_maxValue);
-    //gaugeWidget->addColorBand(50);
+   // gaugeWidget->addArc(70)->setColor(0x00FF00);
+    gaugeWidget->addArc(28)->setColor(Qt::darkBlue);
+    gaugeWidget->addDegrees(65)->setValueRange(range_minValue,range_maxValue);
+    gaugeWidget->addColorBand(35);
 
     gaugeWidget->addValues(80)->setValueRange(range_minValue,range_maxValue);
 

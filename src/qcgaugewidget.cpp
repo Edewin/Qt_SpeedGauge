@@ -720,7 +720,7 @@ void QcNeedleItem::setNeedle(QcNeedleItem::NeedleType needleType)
 void QcNeedleItem::createDiamonNeedle(float r)
 {
     QVector<QPointF> tmpPoints;
-    tmpPoints.append(QPointF(0.0, 0.0));
+    tmpPoints.append(QPointF(0.0, -20.0));
     tmpPoints.append(QPointF(-r/10.0,r/20.0));
     tmpPoints.append(QPointF(0.0, r));
     tmpPoints.append(QPointF(r/10.0,r/20.0));

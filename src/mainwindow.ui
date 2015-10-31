@@ -438,25 +438,18 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout"/>
+    </item>
+    <item>
      <widget class="QSlider" name="horizontalSlider">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <layout class="QHBoxLayout" name="horizontalLayout"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="pushButtonChangeSpeedGauge">
-      <property name="text">
-       <string>Change Speed Gauge Automatic</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
+    <item>
      <widget class="QPushButton" name="pushButtonStopTimer">
       <property name="palette">
        <palette>
@@ -878,8 +871,12 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout"/>
+    <item>
+     <widget class="QPushButton" name="pushButtonChangeSpeedGauge">
+      <property name="text">
+       <string>Change Speed Gauge Automatic</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
