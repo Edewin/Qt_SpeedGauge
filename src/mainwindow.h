@@ -19,6 +19,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
 
+    void createSpeedGauge(QcGaugeWidget* gaugeWidget, int range_minValue, int range_maxValue);
+
+
     ~MainWindow();
 
 private slots:
@@ -35,11 +38,16 @@ private:
 
     QcLabelItem *lab;
 
+    QcLabelItem *lab2;
+
     QTimer *timer1;
 
     static int counter;
 
     static int current_value;
+    //new object
+    QcGaugeWidget *mySpeedGauge;
+    QcNeedleItem *mySpeedNeedle;
 
     //added from example
     QcGaugeWidget *mSpeedGauge;
