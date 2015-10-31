@@ -159,16 +159,8 @@ void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 void MainWindow::timerHandler()
 {
     // timer handler
-<<<<<<< HEAD
     MainWindow::counter++;
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 6735d5ec761f1d6e2117a3398df732f09719f312
-=======
     MainWindow::current_value++;
->>>>>>> testing_needles
 
     if(MainWindow::current_value > MAX_VALUE)
     {
