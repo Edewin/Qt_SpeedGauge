@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "qcgaugewidget.h"
 #include <QTimer>
+#include <QMessageBox>
 
 
 namespace Ui {
@@ -19,6 +20,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
 
+    void createSpeedGauge(QcGaugeWidget* gaugeWidget, int range_minValue, int range_maxValue);
+
+
     ~MainWindow();
 
 private slots:
@@ -31,15 +35,24 @@ private slots:
     void on_pushButtonStopTimer_clicked();
 
 private:
+    QMessageBox msgbox;
+
     Ui::MainWindow *ui;
 
     QcLabelItem *lab;
+
+    QString textLabel;
+
+    QcLabelItem *lab2;
 
     QTimer *timer1;
 
     static int counter;
 
     static int current_value;
+    //new object
+    QcGaugeWidget *mySpeedGauge;
+    QcNeedleItem *mySpeedNeedle;
 
     //added from example
     QcGaugeWidget *mSpeedGauge;

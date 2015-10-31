@@ -280,11 +280,12 @@ public:
     void setColor(const QColor & color);
     QColor color();
 
+
     void setLabel(QcLabelItem*);
     QcLabelItem * label();
 
     enum NeedleType{DiamonNeedle,TriangleNeedle,FeatherNeedle,AttitudeMeterNeedle,CompassNeedle};//#
-
+        NeedleType mNeedleType2;
     void setNeedle(QcNeedleItem::NeedleType needleType);
 private:
     QPolygonF mNeedlePoly;

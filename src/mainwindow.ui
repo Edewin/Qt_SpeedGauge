@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>406</width>
-    <height>296</height>
+    <width>857</width>
+    <height>572</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>100</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="palette">
    <palette>
@@ -432,25 +438,33 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
-    <item row="1" column="0">
+    <item>
      <widget class="QSlider" name="horizontalSlider">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="pushButtonChangeSpeedGauge">
-      <property name="text">
-       <string>Change Speed Gauge Automatic</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
+    <item>
      <widget class="QPushButton" name="pushButtonStopTimer">
       <property name="palette">
        <palette>
@@ -872,6 +886,13 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButtonChangeSpeedGauge">
+      <property name="text">
+       <string>Change Speed Gauge Automatic</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -879,8 +900,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>406</width>
-     <height>21</height>
+     <width>857</width>
+     <height>27</height>
     </rect>
    </property>
   </widget>
