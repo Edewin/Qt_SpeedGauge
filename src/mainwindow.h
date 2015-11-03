@@ -48,6 +48,8 @@ private:
 
     Ui::MainWindow *ui;
 
+    QString portAvailable;
+
     QcLabelItem *lab;
 
     QString textLabel;

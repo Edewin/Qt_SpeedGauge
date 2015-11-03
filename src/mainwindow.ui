@@ -465,6 +465,9 @@
      </widget>
     </item>
     <item>
+     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    </item>
+    <item>
      <widget class="QPushButton" name="pushButtonStopTimer">
       <property name="palette">
        <palette>

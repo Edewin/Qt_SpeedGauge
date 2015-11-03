@@ -22,6 +22,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
+
+    //serial port info
+    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        ui->plainTextEdit->appendPlainText(info.portName());
+        portAvailable = info.portName(); //just checking the concept --> must implement a much robust method to use Serial Port
+    }
+
+
+    //ui->plainTextEdit->appendPlainText();
+
+
     sf::Joystick::update();
 
     if(sf::Joystick::isConnected(0))
@@ -144,7 +155,8 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::handlerReadSerial()
 {
     bufferSerialRead.append(serial->readAll());
-    qDebug()<< bufferSerialRead;
+   // qDebug()<< bufferSerialRead;
+    ui->plainTextEdit->appendPlainText( QString::fromStdString(bufferSerialRead.toStdString()) );
 }
 
 /*initialize static variables*/
@@ -181,6 +193,9 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
     timer1->start(40);
+    serial->setPortName(portAvailable);
+    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->open(QIODevice::ReadOnly);
   //  msgbox.setText("Timer1 has been released to space :D");
   //  msgbox.exec();
 }
@@ -242,10 +257,10 @@ void MainWindow::createSpeedGauge(QcGaugeWidget* gaugeWidget,  int range_minValu
 
    // gaugeWidget->addArc(70)->setColor(0x00FF00);
     gaugeWidget->addArc(28)->setColor(Qt::darkBlue);
-    gaugeWidget->addDegrees(65)->setValueRange(range_minValue,range_maxValue);
-    gaugeWidget->addColorBand(35);
+    gaugeWidget->addDegrees(90)->setValueRange(range_minValue,range_maxValue);
+   // gaugeWidget->addColorBand(35);
 
-    gaugeWidget->addValues(80)->setValueRange(range_minValue,range_maxValue);
+    gaugeWidget->addValues(65)->setValueRange(range_minValue,range_maxValue);
 
     gaugeWidget->addLabel(70)->setText("Km/h");
 
