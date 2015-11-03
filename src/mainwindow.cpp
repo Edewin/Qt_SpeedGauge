@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qcgaugewidget.h"
-#include "delayclass.h"
 
+#include "delayclass.h"
+#include <QSerialPort>
+#include <QSerialPortInfo>
 #include <SFML/Window.hpp>
 #include <QMessageBox>
 #include <QTimer>
+#include <QDebug>
 
 #define MIN_VALUE 0
 #define MAX_VALUE 70
@@ -28,6 +31,17 @@ MainWindow::MainWindow(QWidget *parent) :
         msgbox.exec();
 
     }
+    else
+    {
+        qDebug()<<"joystick 0 is not connected";
+    }
+
+    serial = new QSerialPort(this);
+    serial->setPortName("dev/pts/2");
+    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->open(QSerialPort::ReadOnly);
+   // availablePorts = new QSerialPortInfo();
+
 
 
     mSpeedGauge = new QcGaugeWidget(this);
@@ -118,8 +132,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(timer1, SIGNAL(timeout()),this,SLOT(timerHandler()));
 
+    // connect serial port with slots :)
+    connect(serial,SIGNAL(readyRead()),this,SLOT(handlerReadSerial()));
 
 
+
+}
+
+//serial handler
+
+void MainWindow::handlerReadSerial()
+{
+    bufferSerialRead.append(serial->readAll());
+    qDebug()<< bufferSerialRead;
 }
 
 /*initialize static variables*/
@@ -131,6 +156,10 @@ int MainWindow::current_value = 0;
 
 MainWindow::~MainWindow()
 {
+    if(serial->isOpen())
+    {
+        serial->close();
+    }
     delete ui;
 }
 

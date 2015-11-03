@@ -5,6 +5,9 @@
 #include "qcgaugewidget.h"
 #include <QTimer>
 #include <QMessageBox>
+#include <QByteArray>
+#include <QtSerialPort/QSerialPort>
+#include <QSerialPortInfo>
 
 
 namespace Ui {
@@ -27,8 +30,10 @@ public:
 
 private slots:
     void on_horizontalSlider_valueChanged(int value);
+
     void timerHandler();
 
+    void handlerReadSerial();
 
     void on_pushButtonChangeSpeedGauge_clicked();
 
@@ -36,6 +41,10 @@ private slots:
 
 private:
     QMessageBox msgbox;
+
+    QSerialPort *serial;
+    QSerialPortInfo availablePorts;
+    QByteArray bufferSerialRead;
 
     Ui::MainWindow *ui;
 
