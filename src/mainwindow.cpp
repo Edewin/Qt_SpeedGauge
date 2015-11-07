@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     serial = new QSerialPort(this);
-    serial->setPortName("dev/pts/2");
+   // serial->setPortName("dev/pts/2");
     serial->setBaudRate(QSerialPort::Baud9600);
     serial->open(QSerialPort::ReadOnly);
    // availablePorts = new QSerialPortInfo();
@@ -213,8 +213,8 @@ void MainWindow::timerHandler()
     mSpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::X));
 
     sf::Joystick::update();
-    textLabel = textLabel.sprintf("X: %f, Y: %f",sf::Joystick::getAxisPosition(0,sf::Joystick::X),
-                                  sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
+    textLabel = textLabel.sprintf("X: %f, Y: %f",sf::Joystick::getAxisPosition(0,sf::Joystick::Y),
+                                  sf::Joystick::getAxisPosition(0,sf::Joystick::U));
     ui->label->setText(textLabel);
     mySpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
   //  MainWindow::current_value = MainWindow::counter;
