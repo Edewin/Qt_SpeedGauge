@@ -25,6 +25,8 @@ public:
 
     void createSpeedGauge(QcGaugeWidget* gaugeWidget, int range_minValue, int range_maxValue);
 
+    qreal normalizeJoystick(qreal inputValue);
+
 
     ~MainWindow();
 
@@ -38,6 +40,12 @@ private slots:
     void on_pushButtonChangeSpeedGauge_clicked();
 
     void on_pushButtonStopTimer_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_comboBox_currentIndexChanged(const QString &arg1);
+
+    void on_pushButton_SendSerial_clicked();
 
 private:
     QMessageBox msgbox;

@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
         ui->plainTextEdit->appendPlainText(info.portName());
         portAvailable = info.portName(); //just checking the concept --> must implement a much robust method to use Serial Port
+        ui->comboBox->addItem(portAvailable);
     }
-
 
     //ui->plainTextEdit->appendPlainText();
 
@@ -64,43 +64,6 @@ MainWindow::MainWindow(QWidget *parent) :
     lab = new QcLabelItem(this);
     lab2 = new QcLabelItem(this);
 
-   /* QcBackgroundItem * contour = mSpeedGauge->addBackground(96);
-    contour->clearrColors();
-    contour->addColor(0.1,Qt::white);
-    contour->addColor(0.5,Qt::red);
-    contour->addColor(0.9,Qt::white);
-   // mSpeedGauge->addBackground(100)->addColor(0.2,Qt::red);
-
-    QcBackgroundItem *bkg1 = mSpeedGauge->addBackground(92);
-    bkg1->clearrColors();
-    bkg1->addColor(0.1,Qt::darkBlue);
-    bkg1->addColor(0.4,Qt::white);
-    bkg1->addColor(0.9,Qt::darkBlue);
-
-    QcBackgroundItem *bkg2 = mSpeedGauge->addBackground(88);
-    bkg2->clearrColors();
-    bkg2->addColor(0.2,Qt::red);
-    bkg2->addColor(0.7, Qt::yellow);
-    bkg2->addColor(1.0,Qt::darkGreen);
-
-    mSpeedGauge->addArc(55);
-    mSpeedGauge->addDegrees(65)->setValueRange(MIN_VALUE,MAX_VALUE);
-    mSpeedGauge->addColorBand(50);
-
-    mSpeedGauge->addValues(80)->setValueRange(MIN_VALUE,MAX_VALUE);
-
-    mSpeedGauge->addLabel(70)->setText("Km/h");
-
-    lab = mSpeedGauge->addLabel(40);
-    lab->setText("0");
-
-    mSpeedNeedle = mSpeedGauge->addNeedle(60);
-    mSpeedNeedle->setLabel(lab);
-    mSpeedNeedle->setColor(Qt::white);
-    mSpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
-    mSpeedGauge->addBackground(4);
-    mSpeedGauge->addGlass(0.1);
-*/
 
     createSpeedGauge(mSpeedGauge, MIN_VALUE + 40, MAX_VALUE+40);
 
@@ -128,14 +91,12 @@ MainWindow::MainWindow(QWidget *parent) :
     mySpeedNeedle->setNeedle(QcNeedleItem::AttitudeMeterNeedle);
     mySpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
     mySpeedGauge->addBackground(4);
-    mySpeedGauge->addGlass(59)->setPosition(2);
+    mySpeedGauge->addGlass(89)->setPosition(2);
 
 
     ui->horizontalLayout->addWidget(mSpeedGauge);
     ui->horizontalLayout->addWidget(mySpeedGauge);
-   // lab->setText("123");
 
-   // ui->gridLayout_2->addWidget(mSpeedGauge);
 
     //timer zone
 
@@ -150,7 +111,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-//serial handler
+/***********************************************
+ *      Serial handler
+*********************************************/
 
 void MainWindow::handlerReadSerial()
 {
@@ -158,6 +121,9 @@ void MainWindow::handlerReadSerial()
    // qDebug()<< bufferSerialRead;
     ui->plainTextEdit->appendPlainText( QString::fromStdString(bufferSerialRead.toStdString()) );
 }
+
+/************************************/
+
 
 /*initialize static variables*/
 
@@ -193,9 +159,7 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 void MainWindow::on_pushButtonChangeSpeedGauge_clicked()
 {
     timer1->start(40);
-    serial->setPortName(portAvailable);
-    serial->setBaudRate(QSerialPort::Baud9600);
-    serial->open(QIODevice::ReadOnly);
+
   //  msgbox.setText("Timer1 has been released to space :D");
   //  msgbox.exec();
 }
@@ -213,8 +177,37 @@ void MainWindow::timerHandler()
     mSpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::X));
 
     sf::Joystick::update();
-    textLabel = textLabel.sprintf("X: %f, Y: %f",sf::Joystick::getAxisPosition(0,sf::Joystick::Y),
-                                  sf::Joystick::getAxisPosition(0,sf::Joystick::U));
+
+    qreal myLeftJoystick = sf::Joystick::getAxisPosition(0,sf::Joystick::Y);
+    qreal myRightJoystick = sf::Joystick::getAxisPosition(0,sf::Joystick::U);
+
+    myRightJoystick = normalizeJoystick(myRightJoystick);
+
+    if(serial->isOpen())
+    {
+        QString localTxBuf;
+        int rJoy = (int) (myRightJoystick * 10);
+
+        if(rJoy < 2)
+        {
+            rJoy = 2;
+        }
+        else if (rJoy > 8)
+        {
+            rJoy = 8;
+        }
+
+        localTxBuf.sprintf("%d", rJoy);
+
+        qDebug()<< localTxBuf;
+
+        serial->write(localTxBuf.toUtf8());
+
+        localTxBuf.clear();
+    }
+
+    textLabel = textLabel.sprintf("X: %f, Y: %f", myLeftJoystick, myRightJoystick );
+
     ui->label->setText(textLabel);
     mySpeedNeedle->setCurrentValue(-sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
   //  MainWindow::current_value = MainWindow::counter;
@@ -258,10 +251,52 @@ void MainWindow::createSpeedGauge(QcGaugeWidget* gaugeWidget,  int range_minValu
    // gaugeWidget->addArc(70)->setColor(0x00FF00);
     gaugeWidget->addArc(28)->setColor(Qt::darkBlue);
     gaugeWidget->addDegrees(90)->setValueRange(range_minValue,range_maxValue);
-   // gaugeWidget->addColorBand(35);
+    //gaugeWidget->addColorBand(95);
 
     gaugeWidget->addValues(65)->setValueRange(range_minValue,range_maxValue);
 
     gaugeWidget->addLabel(70)->setText("Km/h");
 
+}
+
+qreal MainWindow::normalizeJoystick(qreal inputValue)
+{
+    return ( 1.00 - ( (inputValue + 100.00) / 200.00 ) );
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    // serial connect
+    serial->setPortName(portAvailable);
+    serial->setBaudRate(QSerialPort::Baud9600);
+    serial->open(QIODevice::ReadWrite);
+    if(serial->isOpen())
+    {
+        QMessageBox msg;
+        msg.setText("serial is open");
+        qDebug()<< "serial is open";
+        msg.exec();
+    }
+    else
+    {
+        qDebug() << "serial is not open";
+    }
+
+}
+
+
+void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    ui->pushButton->setEnabled(true);
+    qDebug() << "combo box is: "<< arg1 ;
+    portAvailable = arg1;
+}
+
+void MainWindow::on_pushButton_SendSerial_clicked()
+{
+    QString txString;
+    txString = ui->serialText->text();
+
+    serial->write(txString.toUtf8());
 }
