@@ -720,9 +720,9 @@ void QcNeedleItem::setNeedle(QcNeedleItem::NeedleType needleType)
 void QcNeedleItem::createDiamonNeedle(float r)
 {
     QVector<QPointF> tmpPoints;
-    tmpPoints.append(QPointF(0.0, -20.0));
+    tmpPoints.append(QPointF(0.0, -10.0));
     tmpPoints.append(QPointF(-r/10.0,r/20.0));
-    tmpPoints.append(QPointF(0.0, r));
+    tmpPoints.append(QPointF(0.0, r+10));
     tmpPoints.append(QPointF(r/10.0,r/20.0));
     mNeedlePoly = tmpPoints;
 }
@@ -739,11 +739,11 @@ void QcNeedleItem::createTriangleNeedle(float r)
 void QcNeedleItem::createFeatherNeedle(float r)
 {
     QVector<QPointF> tmpPoints;
-    tmpPoints.append(QPointF(0.0, r));
-    tmpPoints.append(QPointF(-r/40.0, 0.0));
+    tmpPoints.append(QPointF(0.0, r+40));
+    tmpPoints.append(QPointF(-r/40.0, 40.0));
     tmpPoints.append(QPointF(-r/15.0, -r/5.0));
     tmpPoints.append(QPointF(r/15.0,-r/5));
-    tmpPoints.append(QPointF(r/40.0,0.0));
+    tmpPoints.append(QPointF(r/40.0,40.0));
     mNeedlePoly = tmpPoints;
 }
 

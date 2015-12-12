@@ -35,17 +35,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     sf::Joystick::update();
 
-    if(sf::Joystick::isConnected(0))
-    {
-        //joystick number 0 is connected
-        msgbox.setText("joystick 0 is connected");
-        msgbox.exec();
+//    if(sf::Joystick::isConnected(0))
+//    {
+//        //joystick number 0 is connected
+//        msgbox.setText("joystick 0 is connected");
+//        msgbox.exec();
 
-    }
-    else
-    {
-        qDebug()<<"joystick 0 is not connected";
-    }
+//    }
+//    else
+//    {
+//        qDebug()<<"joystick 0 is not connected";
+//    }
 
     serial = new QSerialPort(this);
    // serial->setPortName("dev/pts/2");
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     lab2 = new QcLabelItem(this);
 
 
-    createSpeedGauge(mSpeedGauge, MIN_VALUE + 40, MAX_VALUE+40);
+    createSpeedGauge(mSpeedGauge, MIN_VALUE, MAX_VALUE);
 
     lab = mSpeedGauge->addLabel(40);
     lab->setText("0");
@@ -74,10 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
     mSpeedNeedle->setLabel(lab);
     mSpeedNeedle->setColor(0xFE2E9A);
 
-    mSpeedNeedle->setNeedle(QcNeedleItem::DiamonNeedle);
+    mSpeedNeedle->setNeedle(QcNeedleItem::FeatherNeedle);
 
     mSpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
     mSpeedGauge->addBackground(4);
+
     mSpeedGauge->addGlass(0.1);
 
     createSpeedGauge(mySpeedGauge, MIN_VALUE, MAX_VALUE);
@@ -87,11 +88,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mySpeedNeedle = mySpeedGauge->addNeedle(60);
     mySpeedNeedle->setLabel(lab2);
-    mySpeedNeedle->setColor(Qt::darkBlue);
-    mySpeedNeedle->setNeedle(QcNeedleItem::AttitudeMeterNeedle);
+    mySpeedNeedle->setColor(0xFF8000);
+    mySpeedNeedle->setNeedle(QcNeedleItem::FeatherNeedle);
     mySpeedNeedle->setValueRange(MIN_VALUE,MAX_VALUE);
     mySpeedGauge->addBackground(4);
-    mySpeedGauge->addGlass(89)->setPosition(2);
+  //  mySpeedGauge->addGlass(89)->setPosition(30);
 
 
     ui->horizontalLayout->addWidget(mSpeedGauge);
@@ -183,6 +184,9 @@ void MainWindow::timerHandler()
 
     myRightJoystick = normalizeJoystick(myRightJoystick);
 
+
+    ui->progressBar->setValue((int)-myLeftJoystick  );
+
     if(serial->isOpen())
     {
         QString localTxBuf;
@@ -234,26 +238,36 @@ void MainWindow::createSpeedGauge(QcGaugeWidget* gaugeWidget,  int range_minValu
     contour->addColor(0.5,Qt::darkGray);
     contour->addColor(0.9,Qt::black);
 
+
     QcBackgroundItem *bkg1 = gaugeWidget->addBackground(94);
     bkg1->clearrColors();
     bkg1->addColor(0.1,Qt::black);
-    bkg1->addColor(0.4,Qt::white);
+  //  bkg1->addColor(0.4,Qt::white);
   //  bkg1->addColor(0.5,Qt::darkYellow);
-    bkg1->addColor(0.6,Qt::white);
+  //  bkg1->addColor(0.6,Qt::white);
     bkg1->addColor(1.0,Qt::black);
 
-    QcBackgroundItem *bkg2 = gaugeWidget->addBackground(28);
+    QcBackgroundItem *bkg2 = gaugeWidget->addBackground(15);
     bkg2->clearrColors();
-    bkg2->addColor(0.5,Qt::white);
+    bkg2->addColor(0.5,Qt::darkGray);
   //  bkg2->addColor(1.0, Qt::darkYellow);
-    bkg2->addColor(0.1,Qt::darkYellow);
+    bkg2->addColor(0.1,Qt::black);
 
    // gaugeWidget->addArc(70)->setColor(0x00FF00);
     gaugeWidget->addArc(28)->setColor(Qt::darkBlue);
-    gaugeWidget->addDegrees(90)->setValueRange(range_minValue,range_maxValue);
+
+    QcDegreesItem* degrees;
+
+    degrees = gaugeWidget->addDegrees(90);
+    degrees->setValueRange(range_minValue,range_maxValue);
+    degrees->setStep(5);
+    degrees->setColor(Qt::white);
     //gaugeWidget->addColorBand(95);
 
-    gaugeWidget->addValues(65)->setValueRange(range_minValue,range_maxValue);
+    QcValuesItem * values;
+    values = gaugeWidget->addValues(68);
+    values->setValueRange(range_minValue,range_maxValue);
+    values->setColor(Qt::white);
 
     gaugeWidget->addLabel(70)->setText("Km/h");
 
